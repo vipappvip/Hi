@@ -1,0 +1,1237 @@
+  /* ------------------------------------------------------------------- */
+        /* 1. CORE VARIABLES AND GLOBAL RESETS */
+        /* ------------------------------------------------------------------- */
+        :root {
+            /* Color Palette for Ultra Dark Mode */
+            --color-bg-primary: #121212; /* Deep Dark Background */
+            --color-bg-secondary: #1e1e1e; /* Card Background */
+            --color-bg-surface: #262626; /* Elevated Surface */
+            --color-text-light: #f0f0f0;
+            --color-text-mid: #b0b0b0;
+            --color-border-dark: #333333;
+            
+            /* Brand Accent Colors (High Contrast) */
+            --color-accent-main: #00bcd4; /* Cyan/Teal - Primary focus */
+            --color-accent-secondary: #ff3d00; /* Deep Orange - Danger/Action */
+            
+            /* Status Colors */
+            --color-online: #4CAF50;
+            --color-offline: #f44336;
+            --color-warning: #FFC107;
+            --color-info: #03A9F4;
+
+            /* Glassmorphism Effect Base */
+            --glass-blur: 15px;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+
+            /* Shadow/Elevation */
+            --shadow-soft: 5px 5px 10px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(45, 45, 45, 0.1);
+            --shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.6);
+            
+            /* Spacing & Radius */
+            --radius-md: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-bg-primary) 0%, #0a0a0a 100%);
+            min-height: 100vh;
+            font-size: 14px;
+            color: var(--color-text-light);
+        }
+
+        /* ------------------------------------------------------------------- */
+        /* 2. LAYOUT & HEADER */
+        /* ------------------------------------------------------------------- */
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-bg-primary) 0%, #0a0a0a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: var(--color-text-light);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Setup & Modal Wrappers - Applying Glassmorphism */
+        .setup-modal, .modal, .password-modal, .device-sms-modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7); /* Darker backdrop */
+            backdrop-filter: blur(var(--glass-blur)); /* Glass backdrop */
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* General Modal Content Container */
+        .setup-content, .modal-content, .password-content {
+            background: rgba(30, 30, 30, 0.9); /* Slightly transparent dark background */
+            color: var(--color-text-light);
+            padding: 30px; 
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-heavy);
+            width: 90%;
+            max-width: 400px;
+            border: var(--glass-border);
+            text-align: center;
+        }
+        
+        .modal-content {
+             max-width: 380px; /* Slightly wider for better login presentation */
+        }
+        
+        .password-content {
+             max-width: 350px;
+        }
+
+        .setup-content h2 {
+            background: linear-gradient(45deg, var(--color-accent-main), #00e5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .modal-content.large {
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content.xlarge {
+            max-width: 1100px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--color-text-mid);
+        }
+
+        .close:hover {
+            color: var(--color-accent-main);
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        /* Header - Applying Glassmorphism */
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            padding: 15px 20px;
+            color: var(--color-text-light);
+            border-bottom: var(--glass-border);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, var(--color-accent-main), #64ffda);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            padding: 8px 15px;
+            border-radius: 18px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            background: var(--color-bg-surface);
+            color: var(--color-text-light);
+            border: 2px solid var(--color-border-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .stat-badge.online {
+            border-color: var(--color-online);
+        }
+
+        .stat-badge.total {
+            border-color: var(--color-info);
+        }
+
+        /* Navigation Buttons - Soft, modern look */
+        .navbar {
+            background: var(--color-bg-secondary);
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border-bottom: 1px solid var(--color-border-dark);
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--color-border-dark);
+            border-radius: 20px;
+            background: var(--color-bg-surface);
+            color: var(--color-text-mid);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-btn:hover {
+            background: var(--color-bg-surface);
+            color: var(--color-text-light);
+            transform: translateY(-1px);
+            box-shadow: 0 0 15px var(--color-accent-main);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, var(--color-accent-main), #00e5ff);
+            color: var(--color-bg-secondary);
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 15px auto;
+            padding: 15px;
+        }
+
+        /* Content Section - Elevated Cards */
+        .content-section {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            box-shadow: var(--shadow-heavy);
+            margin-bottom: 15px;
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header h2 {
+            color: var(--color-text-light);
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, var(--color-accent-main), #64ffda);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+            width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 35px 10px 12px;
+            background: var(--color-bg-surface);
+            color: var(--color-text-light);
+            border: 1px solid var(--color-border-dark);
+            border-radius: 20px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--color-accent-main);
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-mid);
+            font-size: 14px;
+        }
+
+        /* Search Results Header */
+        .search-results-header {
+            background: linear-gradient(90deg, var(--color-accent-main), #00e5ff);
+            color: var(--color-bg-secondary);
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 188, 212, 0.4);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-results-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .search-results-count {
+            background: rgba(0,0,0,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .clear-search {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .clear-search:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Users Grid */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 15px;
+        }
+
+        /* User Card - Soft Shadowing/Neumorphism on Dark */
+        .user-card {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            border-left: 4px solid var(--color-accent-main);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .user-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+        }
+
+        .user-card.online {
+            border-left-color: var(--color-online);
+        }
+
+        .user-card.offline {
+            border-left-color: var(--color-offline);
+        }
+
+        .user-card.pinned {
+            border: 2px solid #FFD700;
+            background: #2a2a1a;
+        }
+
+        .user-card.highlight {
+            border: 2px solid var(--color-accent-main);
+            background: #1e2a2a;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(0, 188, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); }
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .device-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .device-serial {
+            background: linear-gradient(45deg, var(--color-accent-main), #00e5ff);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 188, 212, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .device-serial:hover {
+            transform: scale(1.1);
+        }
+
+        .device-icon {
+            font-size: 22px;
+            color: var(--color-accent-main);
+        }
+
+        .user-id {
+            font-weight: bold;
+            color: var(--color-text-light);
+            font-size: 1rem;
+        }
+
+        .device-model {
+            font-size: 0.75rem;
+            color: var(--color-text-mid);
+            margin-top: 2px;
+        }
+
+        .user-status {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-online {
+            background: var(--color-online);
+            color: white;
+        }
+
+        .status-offline {
+            background: var(--color-offline);
+            color: white;
+        }
+
+        .pin-btn {
+            background: none;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pin-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .battery-info {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--color-text-mid);
+        }
+
+        .battery-level {
+            width: 70px;
+            height: 18px;
+            background: var(--color-border-dark);
+            border-radius: 9px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .battery-fill {
+            height: 100%;
+            background: var(--color-online);
+            border-radius: 9px;
+            transition: width 0.3s ease;
+        }
+
+        .battery-low {
+            background: var(--color-offline);
+        }
+
+        .battery-medium {
+            background: var(--color-warning);
+        }
+
+        .user-info {
+            color: var(--color-text-mid);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-top: 8px;
+        }
+
+        .user-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-primary {
+            background: var(--color-accent-main);
+            color: var(--color-bg-primary);
+        }
+
+        .btn-primary:hover {
+            background: #00e5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.5);
+        }
+
+        .btn-success {
+            background: var(--color-online);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--color-warning);
+            color: var(--color-bg-primary);
+        }
+
+        .btn-danger {
+            background: var(--color-offline);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e63939;
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.5);
+        }
+
+        .btn-info {
+            background: var(--color-info);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-group {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.1);
+            color: var(--color-text-light);
+            border: 1px solid var(--color-border-dark);
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Form Styles - Enhanced for modal depth */
+        .form-input {
+            width: 100%;
+            padding: 12px 15px; 
+            background: var(--color-bg-primary);
+            color: var(--color-text-light);
+            border: 1px solid var(--color-border-dark);
+            border-radius: 8px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            /* Neumorphic Inset Shadow */
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.6), inset -3px -3px 6px rgba(45, 45, 45, 0.1); 
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-accent-main);
+            /* Subtle glow on focus */
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 188, 212, 0.6); 
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+        }
+
+        /* SMS List */
+        .sms-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* SMS Card Styles */
+        .sms-item {
+            background: var(--color-bg-surface);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--color-info);
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .sms-item.highlight {
+            border-left-color: var(--color-accent-main);
+            background: #1e2a2a;
+            animation: pulse 2s infinite;
+        }
+
+        .sms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .sms-sender {
+            font-weight: bold;
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+        }
+
+        .sms-date {
+            color: var(--color-text-mid);
+            font-size: 0.75rem;
+        }
+
+        .sms-body {
+            color: var(--color-text-light);
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+
+        .sms-device {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--color-text-mid);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sms-serial {
+            font-weight: bold;
+            color: var(--color-accent-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sms-serial:hover {
+            text-decoration: underline;
+        }
+
+        /* All Data Group Styles */
+        .data-group-container {
+            margin-top: 20px;
+        }
+
+        .data-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-border-dark);
+            margin-bottom: 15px; /* Added spacing */
+        }
+
+        .data-group-title {
+            background: linear-gradient(45deg, #FF6B6B, #F44336);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .data-size-badge {
+            background: #F44336;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Updated Login Data Styles - Direct Serial-wise Display */
+        .login-data-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .serial-group {
+            background: var(--color-bg-surface);
+            border-radius: var(--radius-md);
+            padding: 0;
+            box-shadow: var(--shadow-soft);
+            border-left: 4px solid #F44336;
+        }
+
+        .serial-header {
+            background: linear-gradient(45deg, #F44336, #FF6B6B);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .serial-header:hover {
+            background: linear-gradient(45deg, #8E24AA, #D81B60);
+        }
+
+        .serial-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .serial-number {
+            background: rgba(255,255,255,0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .device-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .device-name {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .device-id {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .data-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .login-records {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .login-records.expanded {
+            max-height: 1000px;
+            padding: 20px;
+            background: var(--color-bg-secondary);
+        }
+
+        .login-record {
+            background: var(--color-bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--color-border-dark);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .login-record:last-child {
+            margin-bottom: 0;
+        }
+
+        .login-data-item {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .login-data-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .login-key {
+            font-weight: bold;
+            color: #FF6B6B;
+            min-width: 150px;
+        }
+
+        .login-value {
+            color: var(--color-text-light);
+            flex: 1;
+            word-break: break-all;
+        }
+
+        .empty-records {
+            text-align: center;
+            padding: 30px;
+            color: var(--color-text-mid);
+            font-style: italic;
+        }
+
+        /* Settings Cards */
+        .settings-card {
+            background: var(--color-bg-surface);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .settings-card h3 {
+            margin-bottom: 15px;
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Character Counter */
+        .char-counter {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--color-text-mid);
+            margin-top: -8px;
+            margin-bottom: 12px;
+        }
+
+        .char-counter.warning {
+            color: var(--color-warning);
+        }
+
+        .char-counter.error {
+            color: var(--color-offline);
+        }
+
+        /* User Details Styles */
+        .user-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-card {
+            background: var(--color-bg-surface);
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--color-accent-main);
+            color: var(--color-text-light);
+        }
+
+        .detail-card h4 {
+            margin-bottom: 8px;
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+        }
+
+        .detail-item {
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--color-text-mid);
+        }
+
+        .detail-value {
+            color: var(--color-text-light);
+        }
+
+        /* Status Check Button */
+        .status-check-btn {
+            background: var(--color-warning);
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            margin-left: 8px;
+        }
+
+        .status-check-btn:hover {
+            background: #e68900;
+        }
+
+        /* Password Verification Modal */
+        .password-modal {
+            z-index: 1001;
+        }
+
+        .password-content {
+            z-index: 1001;
+        }
+
+        .password-content h3 {
+            margin-bottom: 15px;
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Device SMS Modal */
+        .device-sms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--color-border-dark);
+            margin-bottom: 15px; /* Added spacing */
+        }
+
+        .device-sms-title {
+            background: linear-gradient(45deg, var(--color-accent-main), #00e5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .sms-count-badge {
+            background: var(--color-info);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Banking SMS Styles */
+        /* Updated class name for Payment/Transaction */
+        .payment-transaction-sms {
+            border-left-color: var(--color-online) !important;
+            background: #1c2a1c !important; /* Darker green tint */
+        }
+
+        .otp-sms {
+            border-left-color: var(--color-warning) !important;
+            background: #2a2a1a !important; /* Darker yellow tint */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .user-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content.large,
+            .modal-content.xlarge {
+                width: 95%;
+                padding: 12px;
+            }
+
+            .search-results-header {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .serial-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .serial-info {
+                width: 100%;
+            }
+
+            .data-count {
+                align-self: flex-end;
+            }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 12px 20px;
+            background: var(--color-bg-surface);
+            color: var(--color-text-light);
+            border-radius: 6px;
+            box-shadow: var(--shadow-heavy);
+            z-index: 1001;
+            transform: translateX(350px);
+            transition: transform 0.3s ease;
+            font-size: 0.85rem;
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: var(--color-online);
+            color: var(--color-bg-primary);
+        }
+
+        .toast.error {
+            background: var(--color-offline);
+            color: white;
+        }
+
+        .toast.warning {
+            background: var(--color-warning);
+            color: var(--color-bg-primary);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--color-border-dark);
+            margin-bottom: 0; 
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--color-accent-main);
+            color: var(--color-accent-main);
+            font-weight: 600;
+        }
+
+        /* Action Row Wrapper (Buttons) */
+        .action-row-wrapper {
+            background: var(--color-bg-secondary);
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--color-border-dark);
+            box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+
+        .tab-content {
+            /* This class is not actively used in the provided JS structure. */
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--color-text-mid);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: var(--color-border-dark);
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+        }
+        
+        /* --- START OF REQUESTED ADJUSTMENTS for Larger Buttons (Login & Send SMS) --- */
+        
+        /* 1. Target the base button for size increase (will affect all .btn) */
+        .btn {
+            padding: 10px 20px; /* Increase padding to make the button physically larger */
+            font-size: 0.95rem; /* Increase font size for better visibility */
+            gap: 8px; /* Increase gap for icon/text separation */
+            border-radius: 12px; /* Double the border-radius for a slightly softer, larger look */
+        }
+
+        /* 2. Target the primary button to ensure a strong presence */
+        .btn-primary {
+            font-weight: 800; /* Ensure bold font weight for emphasis */
+        }
+
+        /* 3. Specifically target the Login and Send SMS buttons inside their modals 
+           to make them even more prominent, using !important for override */
+        #loginModal .btn-primary,
+        #sendSMSModal .btn-primary {
+            font-size: 1.1rem !important; 
+            padding: 15px 30px !important; 
+            font-weight: bold !important;
+        }
+        
+        /* 4. Ensure the Send/Forward buttons inside user card are reasonably sized */
+        .user-card .header .nav-btn {
+            padding: 8px 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Reset for the small logout button */
+        .btn-logout {
+            font-size: 0.8rem;
+            padding: 6px 15px;
+        }
+        
+        /* --- END OF REQUESTED ADJUSTMENTS --- */
